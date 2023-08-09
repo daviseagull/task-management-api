@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: task-management-api
+  data:
+    mongodb:
+      database: task-management-api
+      uri: mongodb+srv://${MONGODB_USER}:${MONGODB_PASSWORD}@${MONGODB_CLUSTER}/${spring.application.name}?retryWrites=true&w=majority
