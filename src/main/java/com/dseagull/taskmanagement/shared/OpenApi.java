@@ -1,4 +1,4 @@
-package com.dseagull.taskmanagement.api;
+package com.dseagull.taskmanagement.shared;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

@@ -1,4 +1,4 @@
-package com.dseagull.taskmanagement.api;
+package com.dseagull.taskmanagement.shared.handler;
 
 import com.dseagull.taskmanagement.shared.dto.ErrorOutputDto;
 import com.dseagull.taskmanagement.user.exception.UserAlreadyExistsException;
