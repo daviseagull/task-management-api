@@ -2,11 +2,13 @@ package com.dseagull.taskmanagement.user.controller;
 
 import com.dseagull.taskmanagement.shared.util.PageUtils;
 import com.dseagull.taskmanagement.user.controller.swagger.UserSwagger;
+import com.dseagull.taskmanagement.user.dto.UsersOutputDto;
 import com.dseagull.taskmanagement.user.service.UserService;
 import com.dseagull.taskmanagement.user.util.UserUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +21,7 @@ public class UserController implements UserSwagger {
 
     @Override
     @GetMapping
-    public ResponseEntity<Object> getUsers(
+    public ResponseEntity<UsersOutputDto> getUsers(
             String email,
             String username,
             String role,
@@ -34,5 +36,12 @@ public class UserController implements UserSwagger {
                         UserUtils.getFilters(username, email, role)
                 )
         );
+    }
+
+    @Override
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<String> disableUser(String id) {
+        service.disableUser(id);
+        return ResponseEntity.noContent().build();
     }
 }
