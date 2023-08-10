@@ -9,6 +9,7 @@ import com.dseagull.taskmanagement.user.exception.UserAlreadyExistsException;
 import com.dseagull.taskmanagement.user.model.Status;
 import com.dseagull.taskmanagement.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import static java.lang.Boolean.TRUE;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -38,16 +40,21 @@ public class AuthenticationService {
         checkIfIsValid(request);
         User user = createUser(request);
         repository.save(user);
+        log.info("User with username created successfully: {}", request.username());
         return generateResponse(user);
     }
 
     private void checkIfIsValid(RegisterInputDto request) {
         if (repository.existsByUsername(request.username())) {
-            throw new UserAlreadyExistsException("User with username used already exists: " + request.username());
+            String message = "Account with username already exists: " + request.username();
+            log.error(message);
+            throw new UserAlreadyExistsException(message);
         }
 
         if (repository.existsByEmail(request.email())) {
-            throw new UserAlreadyExistsException("User with email used already exists: " + request.email());
+            String message = "Account with email already exists: " + request.email();
+            log.error(message);
+            throw new UserAlreadyExistsException(message);
         }
     }
 
@@ -63,14 +70,16 @@ public class AuthenticationService {
     }
 
     public AuthenticationOutputDto authenticate(AuthenticateInputDto request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.username(),
-                        request.password()
-                )
-        );
         UserDetails userDetails = repository.findByUsername(request.username())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + request.username()));
+
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                request.username(),
+                request.password()
+        );
+
+        authenticationManager.authenticate(token);
+
         return generateResponse(userDetails);
     }
 }
