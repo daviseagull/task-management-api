@@ -5,6 +5,7 @@ import com.dseagull.taskmanagement.user.model.Role;
 import com.dseagull.taskmanagement.user.model.Status;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,10 +29,13 @@ public class User implements UserDetails {
 
     private String email;
 
+    @Setter
     private String password;
 
+    @Setter
     private Role role;
 
+    @Setter
     private Status status;
 
     @Override
