@@ -6,14 +6,15 @@ import com.dseagull.taskmanagement.user.dto.AuthenticateInputDto;
 import com.dseagull.taskmanagement.user.dto.AuthenticationOutputDto;
 import com.dseagull.taskmanagement.user.dto.RegisterInputDto;
 import com.dseagull.taskmanagement.user.exception.UserAlreadyExistsException;
+import com.dseagull.taskmanagement.user.exception.UserNotFoundException;
 import com.dseagull.taskmanagement.user.model.Status;
 import com.dseagull.taskmanagement.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,13 +49,13 @@ public class AuthenticationService {
         if (repository.existsByUsername(request.username())) {
             String message = "Account with username already exists: " + request.username();
             log.error(message);
-            throw new UserAlreadyExistsException(message);
+            throw new UserAlreadyExistsException(message, HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (repository.existsByEmail(request.email())) {
             String message = "Account with email already exists: " + request.email();
             log.error(message);
-            throw new UserAlreadyExistsException(message);
+            throw new UserAlreadyExistsException(message, HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
@@ -71,7 +72,7 @@ public class AuthenticationService {
 
     public AuthenticationOutputDto authenticate(AuthenticateInputDto request) {
         UserDetails userDetails = repository.findByUsername(request.username())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + request.username()));
+                .orElseThrow(() -> new UserNotFoundException("User not found: " + request.username(), HttpStatus.NOT_FOUND));
 
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 request.username(),
