@@ -1,16 +1,15 @@
 package com.dseagull.taskmanagement.domain.user.controller;
 
 import com.dseagull.taskmanagement.domain.user.controller.swagger.UserSwagger;
+import com.dseagull.taskmanagement.domain.user.dto.UserInputDto;
+import com.dseagull.taskmanagement.domain.user.dto.UserOutputDto;
 import com.dseagull.taskmanagement.domain.user.dto.UsersOutputDto;
 import com.dseagull.taskmanagement.domain.user.service.UserService;
 import com.dseagull.taskmanagement.domain.user.util.UserUtils;
 import com.dseagull.taskmanagement.shared.util.PageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("v1/users")
@@ -50,5 +49,11 @@ public class UserController implements UserSwagger {
     public ResponseEntity<String> inviteUser(String email) {
         service.inviteUser(email);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<UserOutputDto> editUser(String id, UserInputDto user) {
+        return ResponseEntity.ok(service.editUser(id, user));
     }
 }

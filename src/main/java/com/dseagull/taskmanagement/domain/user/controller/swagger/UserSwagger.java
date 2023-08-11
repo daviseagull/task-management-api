@@ -1,31 +1,20 @@
 package com.dseagull.taskmanagement.domain.user.controller.swagger;
 
+import com.dseagull.taskmanagement.domain.user.dto.UserInputDto;
+import com.dseagull.taskmanagement.domain.user.dto.UserOutputDto;
 import com.dseagull.taskmanagement.domain.user.dto.UsersOutputDto;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Email;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Validated
 public interface UserSwagger {
 
     @Operation(summary = "Paginated endpoint with sort and filter  to get users")
-    @ApiResponse(
-            responseCode = "200",
-            description = "Users list",
-            content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(
-                            schema = @Schema(implementation = UsersOutputDto.class)
-                    )
-            )
-    )
     ResponseEntity<UsersOutputDto> getUsers(
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String username,
@@ -41,4 +30,7 @@ public interface UserSwagger {
 
     @Operation(summary = "Invite an user")
     ResponseEntity<String> inviteUser(@Email @PathVariable String email);
+
+    @Operation(summary = "Edit user info")
+    ResponseEntity<UserOutputDto> editUser(@PathVariable String id, @RequestBody UserInputDto user);
 }

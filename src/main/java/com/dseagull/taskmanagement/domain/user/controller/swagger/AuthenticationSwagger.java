@@ -1,10 +1,10 @@
 package com.dseagull.taskmanagement.domain.user.controller.swagger;
 
 
-import com.dseagull.taskmanagement.shared.dto.ErrorOutputDto;
 import com.dseagull.taskmanagement.domain.user.dto.AuthenticateInputDto;
 import com.dseagull.taskmanagement.domain.user.dto.AuthenticationOutputDto;
 import com.dseagull.taskmanagement.domain.user.dto.RegisterInputDto;
+import com.dseagull.taskmanagement.shared.dto.ErrorOutputDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,7 +41,7 @@ public interface AuthenticationSwagger {
     ResponseEntity<AuthenticationOutputDto> register(@RequestBody RegisterInputDto request);
 
 
-    @Operation(summary = "Get a book by its id")
+    @Operation(summary = "Authenticate User")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",

@@ -11,13 +11,17 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailService {
 
-    @Value("${MAIL_USER}")
+    @Value("${MAIL_USERNAME}")
     private String fromEmail;
 
     private final JavaMailSender javaMail;
 
     @Async
-    public void sendEmail(String toEmail, String subject, String message) {
+    public void sendEmail(
+            String toEmail,
+            String subject,
+            String message
+    ) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setTo(toEmail);

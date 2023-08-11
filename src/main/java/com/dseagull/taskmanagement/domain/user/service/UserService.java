@@ -2,21 +2,23 @@ package com.dseagull.taskmanagement.domain.user.service;
 
 import com.dseagull.taskmanagement.domain.user.User;
 import com.dseagull.taskmanagement.domain.user.dto.UserFilters;
+import com.dseagull.taskmanagement.domain.user.dto.UserInputDto;
 import com.dseagull.taskmanagement.domain.user.dto.UserOutputDto;
 import com.dseagull.taskmanagement.domain.user.dto.UsersOutputDto;
 import com.dseagull.taskmanagement.domain.user.mapper.UserMapper;
+import com.dseagull.taskmanagement.domain.user.model.Role;
 import com.dseagull.taskmanagement.domain.user.model.Status;
 import com.dseagull.taskmanagement.domain.user.repository.UserRepository;
 import com.dseagull.taskmanagement.shared.exception.BusinessLogicException;
 import com.dseagull.taskmanagement.shared.exception.ResourceNotFoundException;
 import com.dseagull.taskmanagement.shared.service.EmailService;
+import com.dseagull.taskmanagement.shared.util.ContextUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,7 +45,7 @@ public class UserService {
     }
 
     public void disableUser(String id) {
-        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User loggedUser = ContextUtil.getUser();
 
         isEqualToLoggedUser(id, loggedUser);
         User user = findUser(id);
@@ -83,5 +85,27 @@ public class UserService {
                 );
 
         emailService.sendEmail(email, "You receive an invite to task management app", message);
+    }
+
+    public UserOutputDto editUser(String id, UserInputDto userDto) {
+        User loggedUser = ContextUtil.getUser();
+        User user = findUser(id);
+
+        isOperationValid(id, userDto, loggedUser, user);
+
+        user = mapper.toEntity(user, userDto);
+
+        repository.save(user);
+        return mapper.toDto(user);
+    }
+
+    private static void isOperationValid(String id, UserInputDto userDto, User loggedUser, User user) {
+        if (id.equalsIgnoreCase(loggedUser.getId()) && !userDto.role().equals(loggedUser.getRole())) {
+            throw new BusinessLogicException("User doesn't have permission to change the role", HttpStatus.UNAUTHORIZED);
+        }
+
+        if (loggedUser.getRole().equals(Role.PROJECT_ADMIN) && user.getRole().equals(Role.APP_ADMIN)) {
+            throw new BusinessLogicException("User doesn't have permission to change the role", HttpStatus.UNAUTHORIZED);
+        }
     }
 }
