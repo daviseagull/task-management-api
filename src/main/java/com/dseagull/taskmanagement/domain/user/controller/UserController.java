@@ -44,4 +44,11 @@ public class UserController implements UserSwagger {
         service.disableUser(id);
         return ResponseEntity.noContent().build();
     }
+
+    @Override
+    @GetMapping(value = "/invite/{email}")
+    public ResponseEntity<String> inviteUser(String email) {
+        service.inviteUser(email);
+        return ResponseEntity.noContent().build();
+    }
 }

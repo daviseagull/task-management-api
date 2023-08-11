@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.constraints.Email;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,4 +38,7 @@ public interface UserSwagger {
 
     @Operation(summary = "Disable an user")
     ResponseEntity<String> disableUser(@PathVariable String id);
+
+    @Operation(summary = "Invite an user")
+    ResponseEntity<String> inviteUser(@Email @PathVariable String email);
 }

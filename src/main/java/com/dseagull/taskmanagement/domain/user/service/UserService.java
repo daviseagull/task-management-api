@@ -9,6 +9,7 @@ import com.dseagull.taskmanagement.domain.user.model.Status;
 import com.dseagull.taskmanagement.domain.user.repository.UserRepository;
 import com.dseagull.taskmanagement.shared.exception.BusinessLogicException;
 import com.dseagull.taskmanagement.shared.exception.ResourceNotFoundException;
+import com.dseagull.taskmanagement.shared.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final EmailService emailService;
     private final UserRepository repository;
     private final UserMapper mapper;
 
@@ -70,5 +72,16 @@ public class UserService {
         if (StringUtils.equals(loggedUser.getId(), userToDisableId)) {
             throw new BusinessLogicException("Logged user can't disable yourself", HttpStatus.CONFLICT);
         }
+    }
+
+    public void inviteUser(String email) {
+        log.info("Inviting user to app: {}", email);
+
+        String message =
+                String.format(
+                        "Hi %s, \nYou receive an invite to the task management app. Click here to finish you profile", email
+                );
+
+        emailService.sendEmail(email, "You receive an invite to task management app", message);
     }
 }
