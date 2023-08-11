@@ -38,6 +38,12 @@ public class UserController implements UserSwagger {
     }
 
     @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<UserOutputDto> getUser(String id) {
+        return ResponseEntity.ok(service.getUser(id));
+    }
+
+    @Override
     @PatchMapping(value = "/{id}")
     public ResponseEntity<String> disableUser(String id) {
         service.disableUser(id);

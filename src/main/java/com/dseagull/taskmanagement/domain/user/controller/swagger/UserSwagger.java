@@ -25,6 +25,9 @@ public interface UserSwagger {
             @RequestParam(defaultValue = "desc") String sortDir
     );
 
+    @Operation(summary = "Gert user info")
+    ResponseEntity<UserOutputDto> getUser(@PathVariable String id);
+
     @Operation(summary = "Disable an user")
     ResponseEntity<String> disableUser(@PathVariable String id);
 

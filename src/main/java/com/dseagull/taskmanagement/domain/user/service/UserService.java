@@ -62,7 +62,11 @@ public class UserService {
         repository.save(user);
     }
 
-    private User findUser(String id) {
+    public UserOutputDto getUser(String id) {
+        return mapper.toDto(findUser(id));
+    }
+
+    public User findUser(String id) {
         Optional<User> user = repository.findById(id);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException("User with id not found: " + id, HttpStatus.NOT_FOUND);
