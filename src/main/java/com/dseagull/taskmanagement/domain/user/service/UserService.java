@@ -43,24 +43,32 @@ public class UserService {
     public void disableUser(String id) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (StringUtils.equals(loggedUser.getId(), id)) {
-            throw new BusinessLogicException("Logged user can't disable yourself", HttpStatus.CONFLICT);
-        }
+        isEqualToLoggedUser(id, loggedUser);
+        User user = findUser(id);
 
+        Status status = Status.builder()
+                .enabled(Boolean.FALSE)
+                .expired(user.getStatus().expired())
+                .locked(user.getStatus().locked())
+                .credentialsExpired(user.getStatus().credentialsExpired())
+                .build();
+
+        user.setStatus(status);
+
+        repository.save(user);
+    }
+
+    private User findUser(String id) {
         Optional<User> user = repository.findById(id);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException("User with id not found: " + id, HttpStatus.NOT_FOUND);
         }
+        return user.get();
+    }
 
-        Status status = Status.builder()
-                .enabled(Boolean.FALSE)
-                .expired(user.get().getStatus().expired())
-                .locked(user.get().getStatus().locked())
-                .credentialsExpired(user.get().getStatus().credentialsExpired())
-                .build();
-
-        user.get().setStatus(status);
-
-        repository.save(user.get());
+    private static void isEqualToLoggedUser(String userToDisableId, User loggedUser) {
+        if (StringUtils.equals(loggedUser.getId(), userToDisableId)) {
+            throw new BusinessLogicException("Logged user can't disable yourself", HttpStatus.CONFLICT);
+        }
     }
 }
