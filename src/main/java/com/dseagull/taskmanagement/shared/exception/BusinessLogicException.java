@@ -1,7 +1,9 @@
 package com.dseagull.taskmanagement.shared.exception;
 
-public class BusinessLogicException extends RuntimeException {
-    public BusinessLogicException(String message) {
-        super(message);
+import org.springframework.http.HttpStatus;
+
+public class BusinessLogicException extends ApiException {
+    public BusinessLogicException(String message, HttpStatus status) {
+        super(message, status);
     }
 }
