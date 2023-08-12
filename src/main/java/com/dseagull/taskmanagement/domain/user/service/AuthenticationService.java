@@ -4,11 +4,11 @@ import com.dseagull.taskmanagement.domain.user.User;
 import com.dseagull.taskmanagement.domain.user.dto.AuthenticateInputDto;
 import com.dseagull.taskmanagement.domain.user.dto.AuthenticationOutputDto;
 import com.dseagull.taskmanagement.domain.user.dto.RegisterInputDto;
+import com.dseagull.taskmanagement.domain.user.exception.UserAlreadyExistsException;
+import com.dseagull.taskmanagement.domain.user.exception.UserNotFoundException;
 import com.dseagull.taskmanagement.domain.user.model.Status;
 import com.dseagull.taskmanagement.domain.user.repository.UserRepository;
 import com.dseagull.taskmanagement.security.service.JwtService;
-import com.dseagull.taskmanagement.domain.user.exception.UserAlreadyExistsException;
-import com.dseagull.taskmanagement.domain.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -48,13 +48,11 @@ public class AuthenticationService {
     private void checkIfIsValid(RegisterInputDto request) {
         if (repository.existsByUsername(request.username())) {
             String message = "Account with username already exists: " + request.username();
-            log.error(message);
             throw new UserAlreadyExistsException(message, HttpStatus.NOT_ACCEPTABLE);
         }
 
         if (repository.existsByEmail(request.email())) {
             String message = "Account with email already exists: " + request.email();
-            log.error(message);
             throw new UserAlreadyExistsException(message, HttpStatus.NOT_ACCEPTABLE);
         }
     }
@@ -81,6 +79,7 @@ public class AuthenticationService {
 
         authenticationManager.authenticate(token);
 
+        log.info("User authenticated: {}", userDetails.getUsername());
         return generateResponse(userDetails);
     }
 }

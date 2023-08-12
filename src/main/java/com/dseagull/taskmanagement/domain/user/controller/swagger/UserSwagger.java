@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Validated
 public interface UserSwagger {
 
-    @Operation(summary = "Paginated endpoint with sort and filter  to get users")
+    @Operation(summary = "Paginated endpoint with sort and filter to get users")
     ResponseEntity<UsersOutputDto> getUsers(
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String username,

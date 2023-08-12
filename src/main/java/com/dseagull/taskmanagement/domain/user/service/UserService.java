@@ -34,6 +34,7 @@ public class UserService {
     private final UserMapper mapper;
 
     public UsersOutputDto getUsers(Pageable pageable, UserFilters filters) {
+        log.info("Getting users: {} {}", pageable.toString(), filters.toString());
         Page<User> pages = repository.getUsers(pageable, filters);
 
         return UsersOutputDto.builder()
@@ -45,6 +46,7 @@ public class UserService {
     }
 
     public void disableUser(String id) {
+        log.info("Disabling user with id {}", id);
         User loggedUser = ContextUtil.getUser();
 
         isEqualToLoggedUser(id, loggedUser);
@@ -67,6 +69,7 @@ public class UserService {
     }
 
     public User findUser(String id) {
+        log.info("Getting user with id {}", id);
         Optional<User> user = repository.findById(id);
         if (user.isEmpty()) {
             throw new ResourceNotFoundException("User with id not found: " + id, HttpStatus.NOT_FOUND);
@@ -92,6 +95,7 @@ public class UserService {
     }
 
     public UserOutputDto editUser(String id, UserInputDto userDto) {
+        log.info("Editing user with id: {} {}", id, userDto);
         User loggedUser = ContextUtil.getUser();
         User user = findUser(id);
 
