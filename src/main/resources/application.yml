@@ -16,3 +16,7 @@ spring:
           auth: true
           starttls:
             enable: true
+springdoc:
+  default-produces-media-type: application/json
+  swagger-ui:
+    display-request-duration: true

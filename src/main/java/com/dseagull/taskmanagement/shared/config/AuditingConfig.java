@@ -1,4 +1,4 @@
-package com.dseagull.taskmanagement.security.config;
+package com.dseagull.taskmanagement.shared.config;
 
 import com.dseagull.taskmanagement.user.User;
 import com.dseagull.taskmanagement.user.dto.AuditUserDto;
