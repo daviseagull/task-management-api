@@ -1,4 +1,4 @@
-package com.dseagull.taskmanagement.user.controller.swagger;
+package com.dseagull.taskmanagement.user.controller;
 
 import com.dseagull.taskmanagement.user.dto.UserInputDto;
 import com.dseagull.taskmanagement.user.dto.UserOutputDto;

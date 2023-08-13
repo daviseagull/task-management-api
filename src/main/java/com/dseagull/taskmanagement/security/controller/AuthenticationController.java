@@ -1,6 +1,5 @@
 package com.dseagull.taskmanagement.security.controller;
 
-import com.dseagull.taskmanagement.security.controller.swagger.AuthenticationSwagger;
 import com.dseagull.taskmanagement.security.usecase.AuthUseCase;
 import com.dseagull.taskmanagement.security.usecase.RegisterUserUseCase;
 import com.dseagull.taskmanagement.user.dto.AuthenticateInputDto;

@@ -1,7 +1,6 @@
 package com.dseagull.taskmanagement.user.controller;
 
 import com.dseagull.taskmanagement.shared.util.PageUtils;
-import com.dseagull.taskmanagement.user.controller.swagger.UserSwagger;
 import com.dseagull.taskmanagement.user.dto.UserInputDto;
 import com.dseagull.taskmanagement.user.dto.UserOutputDto;
 import com.dseagull.taskmanagement.user.dto.UsersOutputDto;

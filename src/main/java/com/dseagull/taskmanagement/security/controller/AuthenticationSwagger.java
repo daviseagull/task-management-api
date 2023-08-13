@@ -1,4 +1,4 @@
-package com.dseagull.taskmanagement.security.controller.swagger;
+package com.dseagull.taskmanagement.security.controller;
 
 
 import com.dseagull.taskmanagement.shared.dto.ErrorOutputDto;
