@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 public enum Role {
     APP_ADMIN,
-    PROJECT_ADMIN,
+    BOARD_ADMIN,
     MEMBER;
 
     @JsonCreator

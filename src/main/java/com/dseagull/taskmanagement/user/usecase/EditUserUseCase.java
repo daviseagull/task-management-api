@@ -28,7 +28,7 @@ public class EditUserUseCase {
             throw new BusinessLogicException("User doesn't have permission to change the role", HttpStatus.UNAUTHORIZED);
         }
 
-        if (loggedUser.getRole().equals(Role.PROJECT_ADMIN) && user.getRole().equals(Role.APP_ADMIN)) {
+        if (loggedUser.getRole().equals(Role.BOARD_ADMIN) && user.getRole().equals(Role.APP_ADMIN)) {
             throw new BusinessLogicException("User doesn't have permission to change the role", HttpStatus.UNAUTHORIZED);
         }
     }
