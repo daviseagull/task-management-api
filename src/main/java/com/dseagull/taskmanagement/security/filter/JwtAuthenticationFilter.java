@@ -1,6 +1,6 @@
 package com.dseagull.taskmanagement.security.filter;
 
-import com.dseagull.taskmanagement.security.service.JwtService;
+import com.dseagull.taskmanagement.security.util.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final JwtUtils jwtUtils;
     private final UserDetailsService userService;
 
     @Override
@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         var token = this.recoverToken(request);
         if (token != null) {
-            var username = jwtService.validateToken(token);
+            var username = jwtUtils.validateToken(token);
             UserDetails user = userService.loadUserByUsername(username);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());

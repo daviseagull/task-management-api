@@ -1,6 +1,6 @@
 package com.dseagull.taskmanagement.security.config;
 
-import com.dseagull.taskmanagement.domain.user.repository.UserRepository;
+import com.dseagull.taskmanagement.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
